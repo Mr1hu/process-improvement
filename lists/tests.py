@@ -3,7 +3,7 @@ from django.urls import resolve
 from lists.views import home_page
 from django.http import HttpRequest
 from django.template.loader import render_to_string
-from lists.models import Item
+from lists.models import Item, List
 
 class ItemModelTest(TestCase):
     
@@ -40,8 +40,9 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, 'list.html')
 
     def test_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
+        list_user = List.objects.create()
+        Item.objects.create(text='itemey 1', list=list_user)
+        Item.objects.create(text='itemey 2', list=list_user)
 
         response = self.client.get('/lists/the-new-page/')
 
